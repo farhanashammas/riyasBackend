@@ -27,8 +27,8 @@ app.use('/products',productRouter)
 const uri="mongodb+srv://farhana:farhana@cluster0-o93hy.mongodb.net/test?retryWrites=true&w=majority"
 
 
-mongoose.connect("mongodb://localhost:27017/mobitech");
-// mongoose.connect(uri)
+// mongoose.connect("mongodb://localhost:27017/mobitech");
+mongoose.connect(uri)
 mongoose.set('useCreateIndex', true);
 mongoose.set('useFindAndModify', false);
 mongoose.connection.on('connected', function() {
