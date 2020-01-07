@@ -15,6 +15,8 @@ app.use(bodyParser.urlencoded({
     extended:true
 }));
 app.use(express.static(path.join(__dirname,"/public")));
+app.use(express.static('dist'));
+
 
 const signupUserRouter=require('./src/routers/signupUserRouter')()
 const loginRouter=require('./src/routers/loginRouter')()
@@ -61,9 +63,10 @@ app.get('/', function(req, res) {
     res.render('index');
 });
 
+var port = process.env.PORT || 8080;
 
-app.listen(3000, () => {
-    console.log(__dirname)
-  console.log('listening on port 3000!')
+app.listen(port, () => {
+    // console.log(__dirname)
+  console.log('listening on port 8080!')
 });
 
