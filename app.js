@@ -51,6 +51,9 @@ process.on('uncaughtException', (err) => {
     process.exit(1) //mandatory (as per the Node docs)
 })
 
+app.set('view engine', 'ejs');
+
+
 app.listen(3000, () => {
     console.log(__dirname)
   console.log('listening on port 3000!')
