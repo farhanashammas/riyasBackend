@@ -55,7 +55,8 @@ app.set('view engine', 'ejs');
 
 // set the home page route
 app.get('/', function(req, res) {
-
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
     // ejs render automatically looks in the views folder
     res.render('index');
 });
