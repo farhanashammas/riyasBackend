@@ -22,7 +22,7 @@ function route() {
                 if(!result){
                     console.log("signup")
                             const finalUser = new signupUserModel(req.body);
-                            // finalUser.userType="admin";
+                            finalUser.userType="admin";
                              finalUser.setPassword(req.body.password);
                              finalUser.save((err, result) => {
                                  if (err) {
