@@ -53,6 +53,13 @@ process.on('uncaughtException', (err) => {
 
 app.set('view engine', 'ejs');
 
+// set the home page route
+app.get('/', function(req, res) {
+
+    // ejs render automatically looks in the views folder
+    res.render('index');
+});
+
 
 app.listen(3000, () => {
     console.log(__dirname)
