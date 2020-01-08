@@ -8,7 +8,7 @@ function route() {
 
     loginRouter.route('/')
     .post(auth.optional, (req, res,next) => {
-        
+
         res.header("Access-Control-Allow-Origin", "*")
         res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
         console.log("Inside login");
@@ -16,7 +16,7 @@ function route() {
             
             return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
                 if (err) {
-                    console.log("error")
+                    console.log("authentication error")
                     return next(err);
                 }
                 if (passportUser && passportUser.userType!="restaurant") {
