@@ -22,6 +22,8 @@ function route() {
      //Admin & User
      productRouter.route('/')
      .post(auth.required, (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*")
+        res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
          console.log("before search: " + req.body.userId);
          userAuth(req.body.userId)
              .then((user) => {

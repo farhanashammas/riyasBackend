@@ -17,6 +17,8 @@ function route() {
 
     signupUserRouter.route('/')
         .post(auth.optional, (req, res) => {
+            res.header("Access-Control-Allow-Origin", "*")
+            res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
             signupUserModel.findOne({ email: req.body.email }).then((result)=>{
 
                 if(!result){
