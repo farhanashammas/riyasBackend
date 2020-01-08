@@ -58,6 +58,7 @@ function route() {
                                         productProcessor: product.productProcessor,
                                         productAvailability: product.productAvailability,
                                         productDescription:product.productDescription,
+                                        totalRating:product.totalRating,
                                         _id: product._id,
                                 }
                                 data.push(itemModel);
@@ -132,6 +133,7 @@ function route() {
                                             productProcessor: product.productProcessor,
                                             productAvailability: product.productAvailability,
                                             productDescription:product.productDescription,
+                                            totalRating:product.totalRating,
                                             _id: product._id,
                                     }
                                     data.push(itemModel);
@@ -163,10 +165,10 @@ function route() {
     res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
         userAuth(req.body.userId).then((user) => {
             if (user == "user") {
-                console.log(req.body);
+                console.log("feedback data "+req.body.userCount);
                 productModel.findById(req.body.resId)
                     .then((result) => {
-                        console.log(result);
+                        console.log("Result data"+result);
                         var userCount = Number(req.body.userCount);
 
                         var totalRating = result.totalRating;
@@ -251,7 +253,9 @@ function route() {
                             productMemory: req.body.productMemory,
                             productProcessor: req.body.productProcessor,
                             productAvailability: req.body.productAvailability,
-                            productDescription:req.body.productDescription
+                            productDescription:req.body.productDescription,
+                            userRating: { one: 0, two: 0, three: 0, four: 0, five: 1 },
+                            totalRating: 2
                         }
                         var product = new productModel(product);
                         product.save(
@@ -280,40 +284,40 @@ function route() {
 
 
         
-    productRouter.route('/showproducts')
-    .post(auth.required, (req, res) => {
-        res.header("Access-Control-Allow-Origin", "*")
-    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-        productModel.find( (err, result) => {
-            if (err || !result) 
-                res.json({ Status: "Error" })
-            else {
-                console.log("rs :" + result)
-                var data = new productModel(result);
-                let i = [];
-                for (product of result) {
-                    let b = product.image.img.toString('base64');
-                    let itemModel = {
-                            image: b,
-                            productName: product.productName,
-                            productCategory: product.productCategory,
-                            productPrice: product.productPrice,
-                            productColor: product.productColor,
-                            productBrand: product.productBrand,
-                            productCamera: product.productCamera,
-                            productMemory: product.productMemory,
-                            productProcessor: product.productProcessor,
-                            productAvailability: product.productAvailability,
-                            productDescription:product.productDescription,
-                            _id: product._id,
-                    }
-                    i.push(itemModel);
-                }
-                data = i;
-                res.json({  data });
-            }
-        });
-    });
+    // productRouter.route('/showproducts')
+    // .post(auth.required, (req, res) => {
+    //     res.header("Access-Control-Allow-Origin", "*")
+    // res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+    //     productModel.find( (err, result) => {
+    //         if (err || !result) 
+    //             res.json({ Status: "Error" })
+    //         else {
+    //             console.log("rs :" + result)
+    //             var data = new productModel(result);
+    //             let i = [];
+    //             for (product of result) {
+    //                 let b = product.image.img.toString('base64');
+    //                 let itemModel = {
+    //                         image: b,
+    //                         productName: product.productName,
+    //                         productCategory: product.productCategory,
+    //                         productPrice: product.productPrice,
+    //                         productColor: product.productColor,
+    //                         productBrand: product.productBrand,
+    //                         productCamera: product.productCamera,
+    //                         productMemory: product.productMemory,
+    //                         productProcessor: product.productProcessor,
+    //                         productAvailability: product.productAvailability,
+    //                         productDescription:product.productDescription,
+    //                         _id: product._id,
+    //                 }
+    //                 i.push(itemModel);
+    //             }
+    //             data = i;
+    //             res.json({  data });
+    //         }
+    //     });
+    // });
 
 
 
@@ -343,6 +347,7 @@ function route() {
                             productProcessor: product.productProcessor,
                             productAvailability: product.productAvailability,
                             productDescription:product.productDescription,
+                            totalRating:product.totalRating,
                             _id: product._id,
                     }
                     console.log(product)
@@ -422,41 +427,41 @@ function route() {
 
 
          
-    productRouter.route('/filter')
-    .post(auth.required, (req, res) => {
-        res.header("Access-Control-Allow-Origin", "*")
-    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-        console.log(req.body)
-        productModel.find({productCategory:req.body.category}, (err, result) => {
-            if (err || !result) 
-                res.json({ Status: "Error" })
-            else {
-                console.log("rs :" + result)
-                var data = new productModel(result);
-                let i = [];
-                for (product of result) {
-                    let b = product.image.img.toString('base64');
-                    let itemModel = {
-                            image: b,
-                            productName: product.productName,
-                            productCategory: product.productCategory,
-                            productPrice: product.productPrice,
-                            productColor: product.productColor,
-                            productBrand: product.productBrand,
-                            productCamera: product.productCamera,
-                            productMemory: product.productMemory,
-                            productProcessor: product.productProcessor,
-                            productAvailability: product.productAvailability,
-                            productDescription:product.productDescription,
-                            _id: product._id,
-                    }
-                    i.push(itemModel);
-                }
-                data = i;
-                res.json({  data });
-            }
-        });
-    });
+    // productRouter.route('/filter')
+    // .post(auth.required, (req, res) => {
+    //     res.header("Access-Control-Allow-Origin", "*")
+    // res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+    //     console.log(req.body)
+    //     productModel.find({productCategory:req.body.category}, (err, result) => {
+    //         if (err || !result) 
+    //             res.json({ Status: "Error" })
+    //         else {
+    //             console.log("rs :" + result)
+    //             var data = new productModel(result);
+    //             let i = [];
+    //             for (product of result) {
+    //                 let b = product.image.img.toString('base64');
+    //                 let itemModel = {
+    //                         image: b,
+    //                         productName: product.productName,
+    //                         productCategory: product.productCategory,
+    //                         productPrice: product.productPrice,
+    //                         productColor: product.productColor,
+    //                         productBrand: product.productBrand,
+    //                         productCamera: product.productCamera,
+    //                         productMemory: product.productMemory,
+    //                         productProcessor: product.productProcessor,
+    //                         productAvailability: product.productAvailability,
+    //                         productDescription:product.productDescription,
+    //                         _id: product._id,
+    //                 }
+    //                 i.push(itemModel);
+    //             }
+    //             data = i;
+    //             res.json({  data });
+    //         }
+    //     });
+    // });
         
 
 
