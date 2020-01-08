@@ -20,9 +20,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static('dist'));
 
-app.use('/signupUser',signupUserRouter);
-app.use('/login',loginRouter);
-app.use('/products',productRouter)
+
 
 const uri="mongodb+srv://farhana:farhana@cluster0-o93hy.mongodb.net/test?retryWrites=true&w=majority"
 
@@ -59,6 +57,9 @@ app.get('/', function(req, res) {
     // ejs render automatically looks in the views folder
     res.render('index');
 });
+app.use('/signupUser',signupUserRouter);
+app.use('/login',loginRouter);
+app.use('/products',productRouter)
 app.listen(port, () => {
     // console.log(__dirname)
   console.log('listening on port 8080!')
