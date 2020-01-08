@@ -50,6 +50,8 @@ function route() {
          
     signupUserRouter.route('/users')
     .post(auth.required, (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*")
+    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
         signupUserModel.find( (err, result) => {
             if (err || !result) 
                 res.json({ Status: "Error" })
@@ -74,6 +76,8 @@ function route() {
 
     signupUserRouter.route('/deleteItem')
     .post(auth.required, (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*")
+    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
         userAuth(req.body.userId).then((user) => {
             if (user == "admin") {
                 var itemId = req.body.itemId;

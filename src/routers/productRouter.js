@@ -82,6 +82,8 @@ function route() {
  //Admin & User
  productRouter.route('/search')
      .post(auth.required, (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*")
+        res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
          console.log("search " + req.body.userId)
          userAuth(req.body.userId).then((user) => {
              if (user == "user" || user == "admin") {
@@ -157,6 +159,8 @@ function route() {
     //User
     productRouter.route('/feedback')
     .post(auth.required, (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*")
+    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
         userAuth(req.body.userId).then((user) => {
             if (user == "user") {
                 console.log(req.body);
@@ -221,6 +225,8 @@ function route() {
     //Admin
     productRouter.route('/addItem')
         .post(auth.required, upload.single('image'), (req, res) => {
+            res.header("Access-Control-Allow-Origin", "*")
+    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
             userAuth(req.body.userId).then((user) => {
                 if (user == "admin") {
                     console.log("admin")
@@ -276,6 +282,8 @@ function route() {
         
     productRouter.route('/showproducts')
     .post(auth.required, (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*")
+    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
         productModel.find( (err, result) => {
             if (err || !result) 
                 res.json({ Status: "Error" })
@@ -312,6 +320,8 @@ function route() {
 
     productRouter.route('/itemfetch')
         .post(auth.required, (req, res) => {
+            res.header("Access-Control-Allow-Origin", "*")
+    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
             userAuth(req.body.userId).then((user) => {
                 if (user == "admin" || user == "user") {
                     productModel.findById( req.body.itemId, (err, data) => {
@@ -354,6 +364,8 @@ function route() {
     //Admin
     productRouter.route('/editItem')
     .post(auth.required, (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*")
+    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
         userAuth(req.body.userId).then((user) => {
             if (user == "admin") {
                 // console.log("admin")
@@ -389,6 +401,8 @@ function route() {
     //Admin
     productRouter.route('/deleteItem')
         .post(auth.required, (req, res) => {
+            res.header("Access-Control-Allow-Origin", "*")
+    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
             userAuth(req.body.userId).then((user) => {
                 if (user == "admin") {
                     var itemId = req.body.itemId;
@@ -410,6 +424,8 @@ function route() {
          
     productRouter.route('/filter')
     .post(auth.required, (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*")
+    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
         console.log(req.body)
         productModel.find({productCategory:req.body.category}, (err, result) => {
             if (err || !result) 
