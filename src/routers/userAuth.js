@@ -8,7 +8,7 @@ function userAuth(id) {
 
         signupUserModel.findById(id, (err, result) => {
             if (!err && result) {
-                // console.log("resolve")
+                console.log("resolve")
                 resolve(result.userType);
             }
             // else if (!result) {
@@ -24,7 +24,7 @@ function userAuth(id) {
             //     });
             // }
             else{
-                // console.log("reject")
+                console.log("reject")
             reject();}
         });
 

@@ -115,7 +115,7 @@ const uri="mongodb+srv://farhana:farhana@cluster0-o93hy.mongodb.net/test?retryWr
 
 mongoose.connect(uri);
 
-//mongoose.connect("mongodb://localhost:27017/FoodCourt");
+// mongoose.connect("mongodb://localhost:27017/mobitech");
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.connection.on('connected', function() {

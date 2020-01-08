@@ -137,7 +137,7 @@ function route() {
                                     data.push(itemModel);
                                 }
 
-                                 return res.json({ restaurants: temp, totalDocs: totalDocs });
+                                 return res.json({ restaurants: data, totalDocs: totalDocs });
                              }
                              else {
                                  return res.json({ Status: "Not Found" });
