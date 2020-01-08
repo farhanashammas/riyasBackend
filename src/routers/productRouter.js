@@ -3,7 +3,7 @@ var { productModel } = require('../models/productModel');
 var { signupUserModel } = require('../models/signupUserModel');
 // var { registerUserModel } = require('../models/registerUserModel');
 var productRouter = express.Router();
-// var { dataModel } = require('../models/dataModel');
+var { dataModel } = require('../models/dataModel');
 const path = require('path');
 const auth = require('./auth');
 var fs = require('fs');
@@ -16,6 +16,205 @@ var upload = multer({
 });
 
 function route() {
+
+
+
+     //Admin & User
+     productRouter.route('/')
+     .post(auth.required, (req, res) => {
+         console.log("before search: " + req.body.userId);
+         userAuth(req.body.userId)
+             .then((user) => {
+                 console.log(user);
+                 if (user == "user" || user == "admin") {
+                     productModel.find({}, null, { $sort: { _id: 1 }}, (err, result) => {
+                         if (err) {
+                             return res.json({ Status: "Error" });
+                         }
+                         if (result) {
+                             data = [];
+
+                             console.log(result);
+
+                            //  for (i of result) {
+                            //      let a = i.image.img.toString('base64');
+                            //      var temp = new productModel(i);
+                            //      temp.image = a;
+                            //      data.push(temp);
+                            //  }
+                            for (product of result) {
+                                let b = product.image.img.toString('base64');
+                                let itemModel = {
+                                        image: b,
+                                        productName: product.productName,
+                                        productCategory: product.productCategory,
+                                        productPrice: product.productPrice,
+                                        productColor: product.productColor,
+                                        productBrand: product.productBrand,
+                                        productCamera: product.productCamera,
+                                        productMemory: product.productMemory,
+                                        productProcessor: product.productProcessor,
+                                        productAvailability: product.productAvailability,
+                                        productDescription:product.productDescription,
+                                        _id: product._id,
+                                }
+                                data.push(itemModel);
+                            }
+
+                             return res.json({ restaurants: data });
+                         }
+                     });
+                 }
+                 
+                 else {
+                     return res.json({ Status: "Error" });
+                 }
+
+             }).catch((err) => {
+                 return res.json({ Status: "Error" });
+             });
+     });
+
+
+
+ //Admin & User
+ productRouter.route('/search')
+     .post(auth.required, (req, res) => {
+         console.log("search " + req.body.userId)
+         userAuth(req.body.userId).then((user) => {
+             if (user == "user" || user == "admin") {
+                 var count = Number(req.body.count);
+                 var fieldType;
+                 if (req.body.fieldType == "productName") {
+                     fieldType = "productName";
+                 }
+                 else {
+                     fieldType = req.body.fieldType;
+                 }
+                 var value = req.body.searchKey;
+                 console.log("field " + fieldType)
+                 // var query = {};
+                 //query[fieldType] =  new RegExp(value， ‘i');
+
+                 productModel.countDocuments({[fieldType]:new RegExp(value,'i')})
+                     .then((totalDocs) => {
+                         productModel.find({ [fieldType]: new RegExp(value, 'i') }, null, { $sort: { _id: 1 }, skip: count, limit: 10 }, (err, result) => {
+                             if (err) {
+                                 return res.json({ Status: "Error" });
+                             }
+                             if (result) {
+                                 console.log(result);
+                                 data = [];
+
+
+                                //  for (i of result) {
+                                //      let a = i.image.img.toString('base64');
+                                //      var temp = new productModel(i);
+                                //      temp.image = a;
+                                //      data.push(temp);
+                                //  }
+
+                                for (product of result) {
+                                    let b = product.image.img.toString('base64');
+                                    let itemModel = {
+                                            image: b,
+                                            productName: product.productName,
+                                            productCategory: product.productCategory,
+                                            productPrice: product.productPrice,
+                                            productColor: product.productColor,
+                                            productBrand: product.productBrand,
+                                            productCamera: product.productCamera,
+                                            productMemory: product.productMemory,
+                                            productProcessor: product.productProcessor,
+                                            productAvailability: product.productAvailability,
+                                            productDescription:product.productDescription,
+                                            _id: product._id,
+                                    }
+                                    data.push(itemModel);
+                                }
+
+                                 return res.json({ restaurants: temp, totalDocs: totalDocs });
+                             }
+                             else {
+                                 return res.json({ Status: "Not Found" });
+                             }
+                         });
+                     })
+             }
+             else {
+                 return res.json({ Status: "Error" });
+             }
+         }).catch((err) => {
+             return res.json({ Status: "Error" });
+         });
+     });
+
+
+
+     
+    //User
+    productRouter.route('/feedback')
+    .post(auth.required, (req, res) => {
+        userAuth(req.body.userId).then((user) => {
+            if (user == "user") {
+                console.log(req.body);
+                productModel.findById(req.body.resId)
+                    .then((result) => {
+                        console.log(result);
+                        var userCount = Number(req.body.userCount);
+
+                        var totalRating = result.totalRating;
+
+                        var userRating = result.userRating;
+                        console.log(userRating);
+                        if (userCount == 1) {
+                            userRating.one = userRating.one + 1;
+                        }
+                        else if (userCount == 2) {
+
+                            userRating.two = userRating.two + 1;
+                            console.log(userRating);
+                        }
+                        else if (userCount == 3) {
+                            userRating.three = userRating.three + 1;
+                        }
+                        else if (userCount == 4) {
+                            userRating.four = userRating.four + 1;
+                        }
+                        else {
+                            userRating.five = userRating.five + 1;
+                        }
+
+                        var oneStar = userRating.one;
+                        var twoStar = userRating.two;
+
+                        var threeStar = userRating.three;
+                        console.log("total rating");
+                        var fourStar = userRating.four;
+
+                        var fiveStar = userRating.five;
+
+                        var totalRating = (1 * oneStar + 2 * twoStar + 3 * threeStar + 4 * fourStar + 5 * fiveStar) / (oneStar + twoStar + threeStar + fourStar + fiveStar);
+                        console.log(totalRating);
+                        productModel.findByIdAndUpdate(req.body.resId, { $set: { userRating: userRating, totalRating: totalRating } }, (err, result) => {
+                            if (result) {
+                                return res.json({ Status: "rating Success" });
+                            }
+                            else {
+                                return res.json({ Status: "result Error" });
+                            }
+                        });
+                    }).catch((err) => {
+                        res.json({ Status: "catch Error" });
+                    });
+            }
+        }).catch((err) => {
+            res.json({ Status: " user Error" });
+        });
+    })
+
+
+
 
     //Admin
     productRouter.route('/addItem')
