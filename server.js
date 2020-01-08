@@ -42,11 +42,6 @@ mongoose.connection.on('connected', function() {
     console.log('Connection to Mongo established.')
 });
 
-process.on('uncaughtException', (err) => {
-    console.error('There was an uncaught error', err)
-    process.exit(1) //mandatory (as per the Node docs)
-})
-
 
 // set the home page route
 var port = process.env.PORT || 8080;
@@ -59,7 +54,14 @@ app.use(express.static(__dirname + '/public'));
 
 app.use('/signupUser',signupUserRouter);
 app.use('/login',loginRouter);
-app.use('/products',productRouter)
+app.use('/products',productRouter);
+
+
+process.on('uncaughtException', (err) => {
+    console.error('There was an uncaught error', err)
+    process.exit(1) //mandatory (as per the Node docs)
+})
+
 app.listen(port, () => {
     // console.log(__dirname)
   console.log('listening on port 8080!')
