@@ -21,7 +21,12 @@ app.use(bodyParser.urlencoded({
 app.use(express.static('dist'));
 
 
-
+app.get('/', function(req, res) {
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+    // ejs render automatically looks in the views folder
+    res.render('index');
+});
 const uri="mongodb+srv://farhana:farhana@cluster0-o93hy.mongodb.net/test?retryWrites=true&w=majority"
 
 
@@ -51,12 +56,7 @@ app.set('view engine', 'ejs');
 
 app.use(express.static(__dirname + '/public'));
 
-app.get('/', function(req, res) {
-    res.header("Access-Control-Allow-Origin", "*")
-    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-    // ejs render automatically looks in the views folder
-    res.render('index');
-});
+
 app.use('/signupUser',signupUserRouter);
 app.use('/login',loginRouter);
 app.use('/products',productRouter)
