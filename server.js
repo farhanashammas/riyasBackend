@@ -55,7 +55,7 @@ mongoose.connection.on('connected', function() {
                         if (err) 
                             return res.json({ Status: "Error" });
                         else
-                            return res.json( result[0].note );
+                            return res.json( result[0].note);
                     });
                 }
                 else 
@@ -72,12 +72,14 @@ mongoose.connection.on('connected', function() {
         res.header("Access-Control-Allow-Origin", "*")
         res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
         userAuth(req.body.userId).then((user) => {
+            console.log(user)
             if (user == "admin") {
-                // console.log("admin aan")
+                console.log("admin aan")
                 var note = req.body
                 var note = new noteModel(note);
-                // console.log("note to add"+note)
-                noteModel.findByIdAndUpdate( '5e170f3751418a24787e85f6',{ $set : {note:note.note } },(err, result) => {
+                console.log("note to add"+note)
+                // '5e17272232f80d11741cff58',{ $set : {note:note.note } },
+                noteModel.findByIdAndUpdate('5e17272232f80d11741cff58',{ $set : {note:note.note } }, (err, result) => {
                     if (err) 
                         return res.json({ Status: "save Error" });
                     else
