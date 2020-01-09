@@ -10,12 +10,14 @@ passport.use(new LocalStrategy({
         if (user) {
             var user=new signupUserModel(user);
             if (!err && user.validatePassword(password)) {
+                console.log("config")
                 return done(null, user);
             }
         }else
             //fail
-
+        {
+            console.log("done")
             return done(null, false, { errors: 'email or password is invalid' });
-
+        }
         });
 }));

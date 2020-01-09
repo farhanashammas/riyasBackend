@@ -4,23 +4,15 @@ var signupUserRouter = express.Router();
 const auth = require('./auth');
 const userAuth = require('./userAuth');
 
-
-
-
-
-
 function route() {
-
-
-
-
 
     signupUserRouter.route('/')
         .post(auth.optional, (req, res) => {
+            console.log(req.body)
             res.header("Access-Control-Allow-Origin", "*")
             res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
             signupUserModel.findOne({ email: req.body.email }).then((result)=>{
-
+                console.log("sign")
                 if(!result){
                     console.log("signup")
                             const finalUser = new signupUserModel(req.body);
@@ -42,6 +34,7 @@ function route() {
                         }
                 
             }).catch((err)=>{
+                console.log("err")
                 res.json({Status:"Error"})
             });
                
@@ -96,6 +89,8 @@ function route() {
     });
 
 
+    
+    
 
 
 

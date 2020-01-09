@@ -39,3 +39,4 @@ signupUserSchema.methods.generateJWT=function(){
 
 var signupUserModel= mongoose.model('signupusers',signupUserSchema);
 module.exports={signupUserModel};
+

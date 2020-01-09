@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const path = require('path');
+const userAuth = require('./src/routers/userAuth');
 
 mongoose.Promise=global.Promise;
 
@@ -19,6 +20,8 @@ app.use(express.static(path.join(__dirname, "/public")));
 const signupUserRouter= require('./src/routers/signupUserRouter')();
 const loginRouter= require('./src/routers/loginRouter')();
 const productRouter=require('./src/routers/productRouter')();
+var { noteModel } = require('./src/models/noteModel');
+const auth = require('./src/routers/auth');
 
 app.use('/signupUser',signupUserRouter);
 app.use('/login',loginRouter);
@@ -36,6 +39,58 @@ mongoose.connection.on('connected', function() {
         }
         console.log('Connection to Mongo established.')
     });
+
+
+        //Admin & user
+        app.route('/note')
+        .post(auth.required, (req, res) => {
+            res.header("Access-Control-Allow-Origin", "*")
+            res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+            userAuth(req.body.userId).then((user) => {
+                if (user == "admin" || user== "user") {
+                    // console.log("noteeeeeeeeeeeeeeeeeee")
+                    noteModel.find((err, result) => {
+                        // var data=(result[0].note)
+                        // console.log(result)
+                        if (err) 
+                            return res.json({ Status: "Error" });
+                        else
+                            return res.json( result[0].note );
+                    });
+                }
+                else 
+                    return res.json({ Status: "Error" });
+            }).catch((err) => {
+                res.json({ Status: "Error" });
+            });
+        });
+
+        //Admin
+    app.route('/newNote')
+    .post(auth.required, (req, res) => {
+        console.log("aut")
+        res.header("Access-Control-Allow-Origin", "*")
+        res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+        userAuth(req.body.userId).then((user) => {
+            if (user == "admin") {
+                // console.log("admin aan")
+                var note = req.body
+                var note = new noteModel(note);
+                // console.log("note to add"+note)
+                noteModel.findByIdAndUpdate( '5e170f3751418a24787e85f6',{ $set : {note:note.note } },(err, result) => {
+                    if (err) 
+                        return res.json({ Status: "save Error" });
+                    else
+                        return res.json({ Status: "Success" });
+                });
+            }
+            else 
+                return res.json({ Status: "admin Error" });
+        }).catch((err) => {
+            res.json({ Status: "catch Error" });
+        });
+    });
+    
 
 process.on('uncaughtException', (err) => {
     console.error('There was an uncaught error', err)

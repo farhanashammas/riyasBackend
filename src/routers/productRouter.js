@@ -1,7 +1,6 @@
 var express = require('express');
 var { productModel } = require('../models/productModel');
 var { signupUserModel } = require('../models/signupUserModel');
-// var { registerUserModel } = require('../models/registerUserModel');
 var productRouter = express.Router();
 var { dataModel } = require('../models/dataModel');
 const path = require('path');
@@ -9,7 +8,6 @@ const auth = require('./auth');
 var fs = require('fs');
 var multer = require('multer');
 const userAuth = require('./userAuth');
-//var util = require('util');
 var parent = path.dirname(path.dirname(__dirname));
 var upload = multer({
     limits: { fileSize: 20000000 }, dest: path.join(parent, "/public/images")
@@ -27,7 +25,7 @@ function route() {
          console.log("before search: " + req.body.userId);
          userAuth(req.body.userId)
              .then((user) => {
-                 console.log(user);
+                //  console.log(user);
                  if (user == "user" || user == "admin") {
                      productModel.find({}, null, { sort: { _id: -1 }}, (err, result) => {
                          if (err) {
@@ -35,15 +33,7 @@ function route() {
                          }
                          if (result) {
                              data = [];
-
-                             console.log(result);
-
-                            //  for (i of result) {
-                            //      let a = i.image.img.toString('base64');
-                            //      var temp = new productModel(i);
-                            //      temp.image = a;
-                            //      data.push(temp);
-                            //  }
+                            //  console.log(result);
                             for (product of result) {
                                 let b = product.image.img.toString('base64');
                                 let itemModel = {
@@ -98,9 +88,6 @@ function route() {
                  }
                  var value = req.body.searchKey;
                  console.log("field " + fieldType)
-                 // var query = {};
-                 //query[fieldType] =  new RegExp(value， ‘i');
-
                  productModel.countDocuments({[fieldType]:new RegExp(value,'i')})
                      .then((totalDocs) => {
                          productModel.find({ [fieldType]: new RegExp(value, 'i') }, null, { sort: { _id: -1 }, skip: count, limit: 10 }, (err, result) => {
@@ -110,15 +97,6 @@ function route() {
                              if (result) {
                                  console.log(result);
                                  data = [];
-
-
-                                //  for (i of result) {
-                                //      let a = i.image.img.toString('base64');
-                                //      var temp = new productModel(i);
-                                //      temp.image = a;
-                                //      data.push(temp);
-                                //  }
-
                                 for (product of result) {
                                     let b = product.image.img.toString('base64');
                                     let itemModel = {
@@ -221,9 +199,6 @@ function route() {
         });
     })
 
-
-
-
     //Admin
     productRouter.route('/addItem')
         .post(auth.required, upload.single('image'), (req, res) => {
@@ -255,7 +230,7 @@ function route() {
                             productAvailability: req.body.productAvailability,
                             productDescription:req.body.productDescription,
                             userRating: { one: 0, two: 0, three: 0, four: 0, five: 1 },
-                            totalRating: 2
+                            totalRating: 4
                         }
                         var product = new productModel(product);
                         product.save(
@@ -281,45 +256,6 @@ function route() {
                 res.json({ Status: "Error" });
             });
         });
-
-
-        
-    // productRouter.route('/showproducts')
-    // .post(auth.required, (req, res) => {
-    //     res.header("Access-Control-Allow-Origin", "*")
-    // res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-    //     productModel.find( (err, result) => {
-    //         if (err || !result) 
-    //             res.json({ Status: "Error" })
-    //         else {
-    //             console.log("rs :" + result)
-    //             var data = new productModel(result);
-    //             let i = [];
-    //             for (product of result) {
-    //                 let b = product.image.img.toString('base64');
-    //                 let itemModel = {
-    //                         image: b,
-    //                         productName: product.productName,
-    //                         productCategory: product.productCategory,
-    //                         productPrice: product.productPrice,
-    //                         productColor: product.productColor,
-    //                         productBrand: product.productBrand,
-    //                         productCamera: product.productCamera,
-    //                         productMemory: product.productMemory,
-    //                         productProcessor: product.productProcessor,
-    //                         productAvailability: product.productAvailability,
-    //                         productDescription:product.productDescription,
-    //                         _id: product._id,
-    //                 }
-    //                 i.push(itemModel);
-    //             }
-    //             data = i;
-    //             res.json({  data });
-    //         }
-    //     });
-    // });
-
-
 
 
     productRouter.route('/itemfetch')
@@ -397,11 +333,6 @@ function route() {
             res.json({ Status: "Error catch" });
         });
     });
-    // {productBrand:req.body.productBrand,productPrice:req.body.productPrice,
-    //     productCamera:req.body.productCamera,productMemory:req.body.productMemory,productProcessor:req.body.productProcessor,
-    //     productAvailability:req.body.productAvailability,productColor:req.body.productColor,productDescription:req.body.productDescription}
-
-    
     
     //Admin
     productRouter.route('/deleteItem')
@@ -424,45 +355,6 @@ function route() {
                 res.json({ Status: "Error" });
             });
         });
-
-
-         
-    // productRouter.route('/filter')
-    // .post(auth.required, (req, res) => {
-    //     res.header("Access-Control-Allow-Origin", "*")
-    // res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-    //     console.log(req.body)
-    //     productModel.find({productCategory:req.body.category}, (err, result) => {
-    //         if (err || !result) 
-    //             res.json({ Status: "Error" })
-    //         else {
-    //             console.log("rs :" + result)
-    //             var data = new productModel(result);
-    //             let i = [];
-    //             for (product of result) {
-    //                 let b = product.image.img.toString('base64');
-    //                 let itemModel = {
-    //                         image: b,
-    //                         productName: product.productName,
-    //                         productCategory: product.productCategory,
-    //                         productPrice: product.productPrice,
-    //                         productColor: product.productColor,
-    //                         productBrand: product.productBrand,
-    //                         productCamera: product.productCamera,
-    //                         productMemory: product.productMemory,
-    //                         productProcessor: product.productProcessor,
-    //                         productAvailability: product.productAvailability,
-    //                         productDescription:product.productDescription,
-    //                         _id: product._id,
-    //                 }
-    //                 i.push(itemModel);
-    //             }
-    //             data = i;
-    //             res.json({  data });
-    //         }
-    //     });
-    // });
-        
 
 
     return productRouter;

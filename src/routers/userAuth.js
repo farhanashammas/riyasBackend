@@ -1,20 +1,19 @@
 const { signupUserModel } = require('../models/signupUserModel');
-// const { registerUserModel } = require('../models/registerUserModel');
-
 
 function userAuth(id) {
     console.log("called me :" + id)
     return new Promise(function (resolve, reject) {
 
+
         signupUserModel.findById(id, (err, result) => {
             if (!err && result) {
-                console.log("resolve")
                 resolve(result.userType);
+                // console.log("resolve")
             }
             // else if (!result) {
             //     registerUserModel.findById(id, (err, result) => {
             //         if (!err && result) {
-            //             console.log(result.userType);
+            //             console.log("usertype"+result.userType);
             //             resolve(result.userType);
 
             //         }
@@ -24,7 +23,7 @@ function userAuth(id) {
             //     });
             // }
             else{
-                console.log("reject")
+                // console.log("reject")
             reject();}
         });
 
