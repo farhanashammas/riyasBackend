@@ -29,7 +29,7 @@ function route() {
              .then((user) => {
                  console.log(user);
                  if (user == "user" || user == "admin") {
-                     productModel.find({}, null, { $sort: { _id: 1 }}, (err, result) => {
+                     productModel.find({}, null, { sort: { _id: -1 }}, (err, result) => {
                          if (err) {
                              return res.json({ Status: "Error" });
                          }
@@ -103,7 +103,7 @@ function route() {
 
                  productModel.countDocuments({[fieldType]:new RegExp(value,'i')})
                      .then((totalDocs) => {
-                         productModel.find({ [fieldType]: new RegExp(value, 'i') }, null, { $sort: { _id: 1 }, skip: count, limit: 10 }, (err, result) => {
+                         productModel.find({ [fieldType]: new RegExp(value, 'i') }, null, { sort: { _id: -1 }, skip: count, limit: 10 }, (err, result) => {
                              if (err) {
                                  return res.json({ Status: "Error" });
                              }
