@@ -54,7 +54,7 @@ function route() {
                                 data.push(itemModel);
                             }
 
-                             return res.json({ restaurants: data });
+                             return res.json({ data: data });
                          }
                      });
                  }

@@ -57,8 +57,10 @@ function route() {
                             userName: user.userName,
                             email:user.email,
                             userType:user.userType,
+                            phone:user.phone,
                             _id: user._id,
                     }
+                    console.log(itemModel)
                     i.push(itemModel);
                 }
                 data = i;

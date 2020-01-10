@@ -13,7 +13,8 @@ const signupUserSchema= new mongoose.Schema({
     },
     hash:String,
     salt:String,
-    userType:String
+    userType:String,
+    phone:Number
 });
 
 signupUserSchema.methods.setPassword=function(password){
