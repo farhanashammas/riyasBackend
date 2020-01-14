@@ -4,6 +4,7 @@ var { noteModel } = require('../models/noteModel');
 const userAuth = require('./userAuth');
 const auth = require('./auth');
 
+
 function route() {
         //Admin & user
         noteRouter.route('/')
@@ -56,6 +57,7 @@ function route() {
             res.json({ Status: "catch Error" });
         });
     });
+
     
     return noteRouter;
 

@@ -6,7 +6,6 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const path = require('path');
 
-
 mongoose.Promise=global.Promise;
 
 require('./src/config/config');

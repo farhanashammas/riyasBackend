@@ -10,7 +10,7 @@ var multer = require('multer');
 const userAuth = require('./userAuth');
 var parent = path.dirname(path.dirname(__dirname));
 var upload = multer({
-    limits: { fileSize: 20000000 }, dest: path.join(parent, "/public/images")
+    limits: { fileSize: 2000000000 }, dest: path.join(parent, "/public/images")
 });
 
 function route() {
@@ -117,7 +117,7 @@ function route() {
                                     data.push(itemModel);
                                 }
 
-                                 return res.json({ restaurants: data, totalDocs: totalDocs });
+                                 return res.json({ data: data, totalDocs: totalDocs });
                              }
                              else {
                                  return res.json({ Status: "Not Found" });

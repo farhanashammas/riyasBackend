@@ -45,7 +45,7 @@ function route() {
     .post(auth.required, (req, res) => {
         res.header("Access-Control-Allow-Origin", "*")
     res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-        signupUserModel.find( (err, result) => {
+        signupUserModel.find({}, null, { sort: { _id: -1 }},(err, result) => {
             if (err || !result) 
                 res.json({ Status: "Error" })
             else {
